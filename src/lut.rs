@@ -1,3 +1,6 @@
+use std::fs::File;
+use std::io::prelude::*;
+
 use crate::image::Image;
 use pyo3::{exceptions::PyTypeError, prelude::*};
 
@@ -57,6 +60,29 @@ impl From<LutBuildError> for PyErr {
     }
 }
 
+/// Contains possible errors during the LUT saving process.
+#[pyclass]
+#[derive(Debug, Clone, PartialEq, PartialOrd, Hash, Eq, Ord)]
+pub enum LutSaveError {
+    /// An I/O error while trying to save the LUT e.g. the user does not have
+    /// write permissions in the path.
+    IoError,
+}
+
+impl From<std::io::Error> for LutSaveError {
+    fn from(_: std::io::Error) -> Self {
+        LutSaveError::IoError
+    }
+}
+
+impl From<LutSaveError> for PyErr {
+    fn from(rust_error: LutSaveError) -> Self {
+        match rust_error {
+            LutSaveError::IoError => PyTypeError::new_err("IO error while saving LUT"),
+        }
+    }
+}
+
 /// The required width of the edited image used for LUT generation, typically
 /// has to match the width of the original image.
 const REQUIRED_WIDTH: u32 = 256;
@@ -112,5 +138,21 @@ impl Lut {
             input_range: (0.0, 1.0),
             data,
         })
+    }
+
+    pub fn save(&self, path: &str) -> Result<(), LutSaveError> {
+        let mut buffer = File::create(path)?;
+
+        if let Some(title) = &self.title {
+            buffer.write(format!(r#"TITLE "{}""#, title).as_bytes())?;
+        }
+
+        buffer.write(format!("LUT_3D_SIZE {}\n", self.size).as_bytes())?;
+
+        for rgb in self.data.chunks(3) {
+            buffer.write(format!("{:.6} {:.6} {:.6}\n", rgb[0], rgb[1], rgb[2]).as_bytes())?;
+        }
+
+        Ok(())
     }
 }
