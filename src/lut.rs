@@ -166,7 +166,12 @@ impl Lut {
             }
         }
 
-        buffer.write(format!("LUT_3D_SIZE {}\n", self.size).as_bytes())?;
+        let lut_size_property_name = match self.lut_type {
+            LutType::Lut1d => "LUT_1D_SIZE",
+            LutType::Lut3d => "LUT_3D_SIZE",
+        };
+
+        buffer.write(format!("{} {}\n", lut_size_property_name, self.size).as_bytes())?;
 
         if write_domain_data {
             buffer.write(b"DOMAIN_MIN 0.0 0.0 0.0\nDOMAIN_MAX 1.0 1.0 1.0\n")?;
