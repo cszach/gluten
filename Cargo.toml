@@ -9,4 +9,5 @@ name = "lut_builder"
 crate-type = ["cdylib"]
 
 [dependencies]
+png = "0.17.13"
 pyo3 = "0.21.1"
