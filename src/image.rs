@@ -1,4 +1,4 @@
-use png::DecodingError;
+use png::{BitDepth, DecodingError};
 use pyo3::exceptions::PyTypeError;
 use pyo3::prelude::*;
 use std::fmt;
@@ -14,6 +14,8 @@ pub struct Image {
     /// The height of the image.
     #[pyo3(get)]
     pub height: u32,
+    /// The bit-depth of the image i.e. how many bits each color channel is.
+    pub bit_depth: u8,
     /// The data specifying the color sequence in 8-bit integers e.g. if there
     /// are 4 color channels, the values in the data are R, G, B, A, R, G, B, A,
     /// and so on.
@@ -91,6 +93,13 @@ impl Image {
         let info = reader.info();
         let width = info.width;
         let height = info.height;
+        let bit_depth = match info.bit_depth {
+            BitDepth::One => 1,
+            BitDepth::Two => 2,
+            BitDepth::Four => 4,
+            BitDepth::Eight => 8,
+            BitDepth::Sixteen => 16,
+        };
 
         let mut buffer = vec![0; reader.output_buffer_size()];
         let frame = reader.next_frame(&mut buffer)?;
@@ -99,6 +108,7 @@ impl Image {
         Ok(Image {
             width,
             height,
+            bit_depth,
             data: bytes.to_vec(),
         })
     }
