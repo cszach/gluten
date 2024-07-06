@@ -102,7 +102,7 @@ impl Lut {
     /// rotating the fastest, and the bottom right pixel corresponds to the
     /// highest input value.
     ///
-    /// An optional title for the LUT may also be provided and will be written
+    /// An optional title for the LUT may also be provided and may be written
     /// to the LUT file when saving.
     #[staticmethod]
     #[pyo3(signature = (edited_image, title=None))]
