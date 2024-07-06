@@ -140,17 +140,49 @@ impl Lut {
         })
     }
 
-    pub fn save(&self, path: &str) -> Result<(), LutSaveError> {
+    /// Save this LUT as a CUBE file.
+    ///
+    /// Arguments:
+    /// * `path` - Where to save this LUT as a file, relative or absolute.
+    /// * `precision` - The number of decimal places to use when writing RGB
+    ///   values. In the Python interface, default is 6.
+    /// * `write_title` - Whether or not to write the title in the file, if this
+    ///   LUT has one. In the Python interface, default is `True`.
+    /// * `write_domain_data` - Whether or not to write the domain data in the
+    ///   file. In the Python interface, default is `False`.
+    #[pyo3(signature = (path, precision = 6, write_title = true, write_domain_data = false))]
+    pub fn save(
+        &self,
+        path: &str,
+        precision: usize,
+        write_title: bool,
+        write_domain_data: bool,
+    ) -> Result<(), LutSaveError> {
         let mut buffer = File::create(path)?;
 
-        if let Some(title) = &self.title {
-            buffer.write(format!(r#"TITLE "{}""#, title).as_bytes())?;
+        if write_title {
+            if let Some(title) = &self.title {
+                buffer.write(format!(r#"TITLE "{}"{}"#, title, "\n").as_bytes())?;
+            }
         }
 
         buffer.write(format!("LUT_3D_SIZE {}\n", self.size).as_bytes())?;
 
+        if write_domain_data {
+            buffer.write(b"DOMAIN_MIN 0.0 0.0 0.0\nDOMAIN_MAX 1.0 1.0 1.0\n")?;
+        }
+
         for rgb in self.data.chunks(3) {
-            buffer.write(format!("{:.6} {:.6} {:.6}\n", rgb[0], rgb[1], rgb[2]).as_bytes())?;
+            buffer.write(
+                format!(
+                    "{:.p$} {:.p$} {:.p$}\n",
+                    rgb[0],
+                    rgb[1],
+                    rgb[2],
+                    p = precision
+                )
+                .as_bytes(),
+            )?;
         }
 
         Ok(())
