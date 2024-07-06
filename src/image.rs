@@ -10,15 +10,15 @@ use std::fs::File;
 pub struct Image {
     /// The width of the image.
     #[pyo3(get)]
-    width: u32,
+    pub width: u32,
     /// The height of the image.
     #[pyo3(get)]
-    height: u32,
+    pub height: u32,
     /// The data specifying the color sequence in 8-bit integers e.g. if there
     /// are 4 color channels, the values in the data are R, G, B, A, R, G, B, A,
     /// and so on.
     #[pyo3(get)]
-    data: Vec<u8>,
+    pub data: Vec<u8>,
 }
 
 unsafe impl Send for Image {}
