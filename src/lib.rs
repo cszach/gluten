@@ -10,7 +10,7 @@ pub use lut::Lut;
 
 /// A Python module for building LUTs, written in Rust.
 #[pymodule]
-fn lut_builder(m: &Bound<'_, PyModule>) -> PyResult<()> {
+fn gluten(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<Image>()?;
     m.add_class::<Lut>()?;
 

@@ -61,6 +61,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "gluten"
+version = "0.1.0"
+dependencies = [
+ "png",
+ "pyo3",
+]
+
+[[package]]
 name = "heck"
 version = "0.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -86,14 +94,6 @@ checksum = "07af8b9cdd281b7915f413fa73f29ebd5d55d0d3f0155584dade1ff18cea1b17"
 dependencies = [
  "autocfg",
  "scopeguard",
-]
-
-[[package]]
-name = "lut_builder"
-version = "0.1.0"
-dependencies = [
- "png",
- "pyo3",
 ]
 
 [[package]]
