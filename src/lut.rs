@@ -89,10 +89,10 @@ impl From<LutSaveError> for PyErr {
 
 /// The required width of the edited image used for LUT generation, typically
 /// has to match the width of the original image.
-const REQUIRED_WIDTH: u32 = 256;
+pub const REQUIRED_WIDTH: u32 = 256;
 /// The required height of the edited image used for LUT generation, typically
 /// has to match the height of the original image.
-const REQUIRED_HEIGHT: u32 = 128;
+pub const REQUIRED_HEIGHT: u32 = 128;
 
 #[pymethods]
 impl Lut {
