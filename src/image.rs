@@ -4,7 +4,7 @@ use pyo3::prelude::*;
 use std::fmt;
 use std::fs::File;
 
-/// A bitmap image.
+/// Bitmap image.
 #[pyclass]
 #[derive(Debug, Clone, Default, PartialEq, PartialOrd, Hash, Eq, Ord)]
 pub struct Image {

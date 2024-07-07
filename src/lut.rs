@@ -4,10 +4,13 @@ use std::io::prelude::*;
 use crate::image::Image;
 use pyo3::{exceptions::PyTypeError, prelude::*};
 
+/// The type of the LUT i.e. 1D or 3D.
 #[pyclass]
 #[derive(Debug, Clone, PartialEq, PartialOrd, Hash, Eq, Ord)]
 pub enum LutType {
+    /// 1D LUT.
     Lut1d,
+    /// 3D LUT.
     Lut3d,
 }
 
@@ -17,6 +20,7 @@ impl Default for LutType {
     }
 }
 
+/// LUT.
 #[pyclass]
 #[derive(Debug, Clone, Default, PartialEq, PartialOrd)]
 pub struct Lut {
@@ -64,8 +68,8 @@ impl From<LutBuildError> for PyErr {
 #[pyclass]
 #[derive(Debug, Clone, PartialEq, PartialOrd, Hash, Eq, Ord)]
 pub enum LutSaveError {
-    /// An I/O error while trying to save the LUT e.g. the user does not have
-    /// write permissions in the path.
+    /// An I/O error while trying to save the LUT e.g. the parent directory does
+    /// not exist, or the user does not have write permissions in the path.
     IoError,
 }
 
@@ -102,8 +106,9 @@ impl Lut {
     /// rotating the fastest, and the bottom right pixel corresponds to the
     /// highest input value.
     ///
-    /// An optional title for the LUT may also be provided and may be written
-    /// to the LUT file when saving.
+    /// Arguments:
+    /// * `edited_image` - The [`Image`] in the format described above.
+    /// * `title` - The title for the LUT (optional).
     #[staticmethod]
     #[pyo3(signature = (edited_image, title=None))]
     pub fn build(edited_image: &Image, title: Option<String>) -> Result<Lut, LutBuildError> {
