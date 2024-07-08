@@ -5,6 +5,9 @@ color grading applications. It has a Python interface that allows you to use
 gLUTen in scripts for tools like Maya, Blender, and other digital content
 creation (DCC) software.
 
+> 🚧 gLUTen is a work in progress. Features are still due for the first Cargo
+> release.
+
 ## ✨ Features
 
 ### 🔨 Generate LUTs
@@ -51,3 +54,36 @@ lut.save("lut.cube", gluten.LutFormat.CubeLut, 6, True, False)
 ### 🎨 LUTs
 
 - Cube LUT
+
+## 👷 Development
+
+### 🦀 For Rust
+
+```shell
+cargo build
+```
+
+### 🐍 For Python
+
+First, set up the Python virtual environment:
+
+```shell
+python -m venv .env
+source .env/bin/activate
+pip install maturin
+```
+
+Then use `maturin` to develop:
+
+```shell
+maturin develop
+```
+
+That's it! You can now use gLUTen.
+
+```
+$ python
+>>> import gluten
+>>> dir(gluten)
+['Image', 'Lut', 'LutFormat', '__all__', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__path__', '__spec__', 'gluten']
+```
