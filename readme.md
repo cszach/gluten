@@ -11,7 +11,7 @@ creation (DCC) software.
 
 Use gLUTen to generate LUTs from a reference image. Here's the workflow:
 
-1. Apply your color correction/grading on <original.png>.
+1. Apply your color correction/grading on [original.png](original.png).
 2. Save the edited image as a PNG; make sure the sizes match with the original.
 3. Import the image using `Image::load_png`.
 4. Generate the LUT using `Lut::build`.
