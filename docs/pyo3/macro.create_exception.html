@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Defines a new exception type."><title>create_exception in pyo3 - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../static.files/rustdoc-ba5701c5741a7b69.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../" data-static-root-path="../static.files/" data-current-crate="pyo3" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0 (90c541806 2023-05-31)" data-search-js="search-e077946657036a58.js" data-settings-js="settings-298e1ea74db45b39.js" data-settings-css="settings-7bfb4c59cc6bc502.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../static.files/storage-62ce34ea385b278a.js"></script><script defer src="sidebar-items.js"></script><script defer src="../static.files/main-f61008743c98d196.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc macro"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../pyo3/index.html"><img class="rust-logo" src="../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2></h2></nav><nav class="sidebar"><a class="logo-container" href="../pyo3/index.html"><img class="rust-logo" src="../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><div class="sidebar-elems"><h2><a href="index.html">In pyo3</a></h2></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Macro <a href="index.html">pyo3</a>::<wbr><a class="macro" href="#">create_exception</a><button id="copy-path" title="Copy item path to clipboard"><img src="../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="srclink" href="../src/pyo3/exceptions.rs.html#238-263">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><span class="macro">macro_rules! </span>create_exception {
+    (<span class="macro-nonterminal">$module</span>: expr, <span class="macro-nonterminal">$name</span>: ident, <span class="macro-nonterminal">$base</span>: ty) =&gt; { ... };
+    (<span class="macro-nonterminal">$module</span>: expr, <span class="macro-nonterminal">$name</span>: ident, <span class="macro-nonterminal">$base</span>: ty, <span class="macro-nonterminal">$doc</span>: expr) =&gt; { ... };
+}</pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Defines a new exception type.</p>
+<h2 id="syntax"><a href="#syntax">Syntax</a></h2>
+<ul>
+<li><code>module</code> is the name of the containing module.</li>
+<li><code>name</code> is the name of the new exception type.</li>
+<li><code>base</code> is the base class of <code>MyError</code>, usually <a href="exceptions/struct.PyException.html" title="struct pyo3::exceptions::PyException"><code>PyException</code></a>.</li>
+<li><code>doc</code> (optional) is the docstring visible to users (with <code>.__doc__</code> and <code>help()</code>) and
+accompanies your error type in your crate’s documentation.</li>
+</ul>
+<h2 id="examples"><a href="#examples">Examples</a></h2>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>pyo3::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>pyo3::create_exception;
+<span class="kw">use </span>pyo3::exceptions::PyException;
+
+<span class="macro">create_exception!</span>(my_module, MyError, PyException, <span class="string">&quot;Some description.&quot;</span>);
+
+<span class="attr">#[pyfunction]
+</span><span class="kw">fn </span>raise_myerror() -&gt; PyResult&lt;()&gt; {
+    <span class="kw">let </span>err = MyError::new_err(<span class="string">&quot;Some error happened.&quot;</span>);
+    <span class="prelude-val">Err</span>(err)
+}
+
+<span class="attr">#[pymodule]
+</span><span class="kw">fn </span>my_module(m: <span class="kw-2">&amp;</span>Bound&lt;<span class="lifetime">&#39;_</span>, PyModule&gt;) -&gt; PyResult&lt;()&gt; {
+    m.add(<span class="string">&quot;MyError&quot;</span>, m.py().get_type_bound::&lt;MyError&gt;())<span class="question-mark">?</span>;
+    m.add_function(<span class="macro">wrap_pyfunction!</span>(raise_myerror, m)<span class="question-mark">?</span>)<span class="question-mark">?</span>;
+    <span class="prelude-val">Ok</span>(())
+}</code></pre></div>
+<p>Python code can handle this exception like any other exception:</p>
+<div class="example-wrap"><pre class="language-python"><code>from my_module import MyError, raise_myerror
+
+try:
+    raise_myerror()
+except MyError as e:
+    assert e.__doc__ == &#39;Some description.&#39;
+    assert str(e) == &#39;Some error happened.&#39;
+</code></pre></div></div></details></section></div></main></body></html>
