@@ -1,8 +1,10 @@
-use std::fs::File;
-use std::io::prelude::*;
+pub mod formats;
 
 use crate::image::Image;
+use formats::{CubeLutFormat, LutSave};
 use pyo3::{exceptions::PyTypeError, prelude::*};
+
+pub use formats::LutFormat;
 
 /// The type of the LUT i.e. 1D or 3D.
 #[pyclass]
@@ -145,56 +147,28 @@ impl Lut {
         })
     }
 
-    /// Save this LUT as a CUBE file.
+    /// Save a LUT as a CUBE file.
     ///
     /// Arguments:
-    /// * `path` - Where to save this LUT as a file, relative or absolute.
+    /// * `path` - Where to save the LUT as a file, relative or absolute.
     /// * `precision` - The number of decimal places to use when writing RGB
     ///   values. In the Python interface, default is 6.
-    /// * `write_title` - Whether or not to write the title in the file, if this
+    /// * `write_title` - Whether or not to write the title in the file, if the
     ///   LUT has one. In the Python interface, default is `True`.
     /// * `write_domain_data` - Whether or not to write the domain data in the
     ///   file. In the Python interface, default is `False`.
-    #[pyo3(signature = (path, precision = 6, write_title = true, write_domain_data = false))]
     pub fn save(
         &self,
         path: &str,
+        format: LutFormat,
         precision: usize,
         write_title: bool,
         write_domain_data: bool,
     ) -> Result<(), LutSaveError> {
-        let mut buffer = File::create(path)?;
-
-        if write_title {
-            if let Some(title) = &self.title {
-                buffer.write(format!(r#"TITLE "{}"{}"#, title, "\n").as_bytes())?;
+        match format {
+            LutFormat::CubeLut => {
+                CubeLutFormat::save(&self, path, precision, write_title, write_domain_data)
             }
         }
-
-        let lut_size_property_name = match self.lut_type {
-            LutType::Lut1d => "LUT_1D_SIZE",
-            LutType::Lut3d => "LUT_3D_SIZE",
-        };
-
-        buffer.write(format!("{} {}\n", lut_size_property_name, self.size).as_bytes())?;
-
-        if write_domain_data {
-            buffer.write(b"DOMAIN_MIN 0.0 0.0 0.0\nDOMAIN_MAX 1.0 1.0 1.0\n")?;
-        }
-
-        for rgb in self.data.chunks(3) {
-            buffer.write(
-                format!(
-                    "{:.p$} {:.p$} {:.p$}\n",
-                    rgb[0],
-                    rgb[1],
-                    rgb[2],
-                    p = precision
-                )
-                .as_bytes(),
-            )?;
-        }
-
-        Ok(())
     }
 }
