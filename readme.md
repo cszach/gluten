@@ -1,5 +1,7 @@
 # 🍞 gLUTen
 
+![CI status badge](https://github.com/cszach/gluten/actions/workflows/CI.yml/badge.svg)
+
 gLUTen is a LUT library written in Rust, for use in color correction and
 color grading applications. It has a Python interface that allows you to use
 gLUTen in scripts for tools like Maya, Blender, and other digital content
